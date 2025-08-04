@@ -6,11 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Customer;
+use App\Models\Deal;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -45,4 +51,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getJWTIdentifier(){
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(){
+        return [];
+    }
+
+    public function customers(){
+        return $this->hasMany(Customer::class);
+    }
+
+    public function deals(){
+        return $this->hasMany(Deal::class);
+    }
+
+    // public function isManager(){
+    //     return $this->role == 'manager';
+    // }
+
+    // public function isSales(){
+    //     return $this->role == 'sales';
+    // }
 }

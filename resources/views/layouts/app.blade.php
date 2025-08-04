@@ -14,10 +14,13 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
-    @include('partials.content_header')
 
     <!-- Main content -->
-    @yield('content')
+      <section class="content">
+        <div class="container-fluid">
+            @yield('content')
+        </div><!--/. container-fluid -->
+      </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -35,5 +38,8 @@
 
 <!-- REQUIRED SCRIPTS -->
     @include('partials.scripts')
+
+    @stack('scripts')
 </body>
+
 </html>

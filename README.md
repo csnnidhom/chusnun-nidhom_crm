@@ -29,12 +29,12 @@ Pastikan sudah menginstall:
 3. **Copy & konfigurasi environment**
     - cp .env.example .env
     - edit file .env :
-        DB_CONNECTION=mysql
-        DB_HOST=127.0.0.1
-        DB_PORT=3306
-        DB_DATABASE=crm
-        DB_USERNAME=root
-        DB_PASSWORD=
+          DB_CONNECTION=mysql
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=crm
+          DB_USERNAME=root
+          DB_PASSWORD=
 
 4. **Generate App Key**
     - php artisan key:generate

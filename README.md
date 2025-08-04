@@ -45,5 +45,16 @@ Pastikan sudah menginstall:
 6. **Jalankan server Laravel**
     - php artisan serve
 
-7. **Akses aplikasi
+7. **Akses aplikasi**
     - http://127.0.0.1
+
+8. **User Login**
+    1.  email  : manager@gmail.com
+        password' : manager123
+
+    2.  email  : sales@gmail.com
+        password' : sales123
+
+    3.  email  : sales2@gmail.com
+        password' : sales123
+

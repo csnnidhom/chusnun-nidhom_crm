@@ -41,7 +41,7 @@ class AuthController extends Controller
 
             return redirect()->intended(route('dashboard.index'));
         }catch(JWTException $e){
-            Log::error($e->getMessage());
+            Log::error('AuthController : ' .$e->getMessage());
             return back()
                 ->withErrors(['failed' => 'Terjadi kesalahan perihal token'])
                 ->withInput();

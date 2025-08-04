@@ -15,29 +15,29 @@ class CustomerSeeder extends Seeder
     {
         Customer::create([
             'user_id' => 2,
-            'nama' => 'Nidhom1',
-            'kontak' => 763839,
+            'nama' => 'Ole Romeny',
+            'kontak' => 01234,
             'alamat' => 'surabaya',
         ]);
 
         Customer::create([
             'user_id' => 2,
-            'nama' => 'Nidhom2',
-            'kontak' => 763839,
+            'nama' => 'Marcelino Ferdinan',
+            'kontak' => 56789,
             'alamat' => 'surabaya'
         ]);
 
         Customer::create([
             'user_id' => 3,
-            'nama' => 'Nidhom3',
-            'kontak' => 763839,
+            'nama' => 'Calvin Verdonk',
+            'kontak' => 01231,
             'alamat' => 'surabaya'
         ]);
 
         Customer::create([
             'user_id' => 3,
-            'nama' => 'Nidhom4',
-            'kontak' => 763839,
+            'nama' => 'Justin Hubner',
+            'kontak' => 48575,
             'alamat' => 'surabaya'
         ]);
     }

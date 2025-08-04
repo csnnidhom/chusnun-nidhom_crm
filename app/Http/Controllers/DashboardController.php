@@ -14,11 +14,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $totalLeads = Customer::totalByStatus('lead', Auth::id());
-        $totalCustomer = Customer::totalByStatus('customer', Auth::id());
-        $totalWaitingApproval = Deal::totalByStatus('waiting approval', Auth::id());
-        $totalApproved = Deal::totalByStatus('approved', Auth::id());
-        $totalRejected = Deal::totalByStatus('rejected', Auth::id());
+        $user = Auth::user();
+        $user_id = $user->role == 'manager' ? null : $user->id;
+
+        $totalLeads = Customer::totalByStatus('lead', $user_id);
+        $totalCustomer = Customer::totalByStatus('customer', $user_id);
+        $totalWaitingApproval = Deal::totalByStatus('waiting approval', $user_id);
+        $totalApproved = Deal::totalByStatus('approved', $user_id);
+        $totalRejected = Deal::totalByStatus('rejected', $user_id);
 
         return view('pages.dashboard.dashboard', compact('totalLeads', 'totalCustomer', 'totalWaitingApproval', 'totalApproved','totalRejected'));
     }

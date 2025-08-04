@@ -1,69 +1,87 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="row">
+    <div class="col-md-12 mt-4">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-dark border-bottom">
+                <h3 class="m-0 text-dark">Detail Deal</h3>
+            </div>
+            <div class="card-body row">
+                <div class="col-md-6">
+                    <p><strong>Customer:</strong> {{ $deal->customer->nama }} </p>
+                    <p><strong>Alamat:</strong> {{ $deal->customer->alamat }} </p>
+                    <p><strong>Kontak:</strong> {{ $deal->customer->kontak }} </p>
+                    @if(!empty($deal->customer->kebutuhan))
+                        <p><strong>Kebutuhan:</strong> {{ $deal->customer->kebutuhan }}</p>
+                    @endif
+                </div>
 
-    <h2>Detail Deal</h2>
-
-    <div class="row">
-        <div class="col-md-6">
-            <p><strong>Customer:</strong> {{ $deal->customer->nama }} </p>
-            <p><strong>Alamat:</strong> {{ $deal->customer->alamat }} </p>
-            <p><strong>Kontak:</strong> {{ $deal->customer->kontak }} </p>
-        </div>
-        <div class="col-md-6">
-            @if(!empty($deal->customer->kebutuhan))
-                <p><strong>Kebutuhan:</strong> {{ $deal->customer->kebutuhan }}</p>
-            @endif
-            <p>
-                <strong>Status:</strong>                                
-                <span class="badge 
-                    @if($deal->status=='approved') bg-success
-                    @elseif($deal->status=='rejected') bg-danger
-                    @else bg-warning text-light @endif">
-                    {{ $deal->status }}
-                </span>
-            </p>
-            <p><strong>Total Harga:</strong> Rp {{ number_format($deal->total_harga, 0, ',', '.') }}</p>
+                <div class="col-md-6 text-md-end">
+                    <p>
+                        <strong>Status:</strong>                                
+                        <span class="badge 
+                            @if($deal->status=='approved') bg-success
+                            @elseif($deal->status=='rejected') bg-danger
+                            @else bg-warning text-light @endif">
+                            {{ ucfirst($deal->status) }}
+                        </span>
+                    </p>
+                    @if($deal->status === 'rejected' && !empty($deal->approvals->notes))
+                        <p><strong>Keterangan:</strong> {{ $deal->approvals->notes }}</p>
+                    @endif
+                    <p>
+                        <strong>Total Harga:</strong> 
+                        Rp {{ number_format($deal->total_harga, 0, ',', '.') }}
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-    <h3>Daftar Produk</h3>
-
-    @include('partials.alert')
-      
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Nama Produk</th>
-                <th>Harga Jual</th>
-                <th>Harga Deal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($deal->items as $item)
-            <tr>
-                <td>{{ $item->product->nama_produk }}</td>
-                <td>Rp {{ number_format($item->product->harga_jual,0,',','.') }}</td>
-                <td>{{ number_format($item->harga_deal, 0, ',', '.') }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    @if(session('role') == 'manager')
-        @if($deal->status == 'waiting approval')
-            <div class="d-flex justify-content-between align-items-center mt-4" style="gap: 10px;">
-                <form action="{{ route('approvals.update', $deal->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-success" value="approved" name="status">Approve</button>
-                    <input type="hidden" name="deal_id" value="{{ $deal->id }}">
-                    <input type="hidden" name="customer_id" value="{{ $deal->customer_id }}">
-                </form>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal">Rejected</button>
+<div class="row">
+    <div class="col-md-12 mt-4">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-header bg-dark border-bottom">
+                <h3 class="m-0 text-dark">Daftar Produk</h3>
             </div>
-        @endif
-    @endif
+            <div class="card-body">
+                @include('partials.alert')
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nama Produk</th>
+                            <th>Harga Jual</th>
+                            <th>Harga Deal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($deal->items as $item)
+                        <tr>
+                            <td>{{ $item->product->nama_produk }}</td>
+                            <td>Rp {{ number_format($item->product->harga_jual,0,',','.') }}</td>
+                            <td>Rp {{ number_format($item->harga_deal, 0, ',', '.') }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                @if(session('role') == 'manager' && $deal->status == 'waiting approval')
+                    <div class="d-flex justify-content-start align-items-center mt-4" style="gap: 10px;">
+                        <form action="{{ route('approvals.update', $deal->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success" value="approved" name="status">Approve</button>
+                            <input type="hidden" name="deal_id" value="{{ $deal->id }}">
+                            <input type="hidden" name="customer_id" value="{{ $deal->customer_id }}">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal">Rejected</button>
+                        </form>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 

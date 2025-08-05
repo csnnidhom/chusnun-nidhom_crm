@@ -39,61 +39,63 @@
                 </form>
             </div>
             @include('partials.alert')
-            <table class="table table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Customer</th>
-                        <th>Produk</th>
-                        <th>Total Harga</th>
-                        @if(session('role') == 'manager')
-                            <th>Dibuat Oleh</th>
-                        @endif
-                        <th>Status</th>
-                        <th>Tanggal Dibuat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($deals as $deal)
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $deal->customer->nama }} <br>
-                                <small>{{ $deal->customer->kontak }}</small>
-                            </td>
-                            <td>
-                                <ul class="mb-0">
-                                    @foreach($deal->items as $item)
-                                        <li>
-                                            {{ $item->product->nama_produk }}
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </td>
-                            <td>Rp {{ number_format($deal->total_harga,0,',','.') }}</td>
+                            <th>No</th>
+                            <th>Customer</th>
+                            <th>Produk</th>
+                            <th>Total Harga</th>
                             @if(session('role') == 'manager')
-                                <td>{{ $deal->user->name }}</td>
+                                <th>Dibuat Oleh</th>
                             @endif
-                            <td>
-                                <span class="badge 
-                                    @if($deal->status=='approved') bg-success
-                                    @elseif($deal->status=='rejected') bg-danger
-                                    @else bg-warning text-light @endif">
-                                    {{ $deal->status }}
-                                </span>
-                            </td>
-                            <td>{{ $deal->created_at-> format('d-M-Y')}}</td>
-                            <td>
-                                <a href="{{ route('deals.show', $deal->id) }}" class="btn btn-warning btn-sm">Rincian</a>
-                            </td>
+                            <th>Status</th>
+                            <th>Tanggal Dibuat</th>
+                            <th>Aksi</th>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center">Belum ada deal</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse($deals as $deal)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $deal->customer->nama }} <br>
+                                    <small>{{ $deal->customer->kontak }}</small>
+                                </td>
+                                <td>
+                                    <ul class="mb-0">
+                                        @foreach($deal->items as $item)
+                                            <li>
+                                                {{ $item->product->nama_produk }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>Rp {{ number_format($deal->total_harga,0,',','.') }}</td>
+                                @if(session('role') == 'manager')
+                                    <td>{{ $deal->user->name }}</td>
+                                @endif
+                                <td>
+                                    <span class="badge 
+                                        @if($deal->status=='approved') bg-success
+                                        @elseif($deal->status=='rejected') bg-danger
+                                        @else bg-warning text-light @endif">
+                                        {{ $deal->status }}
+                                    </span>
+                                </td>
+                                <td>{{ $deal->created_at-> format('d-M-Y')}}</td>
+                                <td>
+                                    <a href="{{ route('deals.show', $deal->id) }}" class="btn btn-warning btn-sm">Rincian</a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center">Belum ada deal</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
             <div class="mt-3">
                 {{ $deals->links() }}
             </div>
